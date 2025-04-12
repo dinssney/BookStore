@@ -2,13 +2,27 @@ package routes
 
 import (
 	"BookStore/internal/delivery"
+	"BookStore/internal/middleware"
+	"BookStore/internal/repository"
+	"BookStore/internal/service"
+
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
-func RegisterBookRoutes(r *gin.Engine, bookHandler *delivery.BookHandler) {
-	r.GET("/books", bookHandler.GetAllBooks)
-	r.GET("/books/:id", bookHandler.GetBookByID)
-	r.POST("/books", bookHandler.CreateBook)
-	r.PUT("/books/:id", bookHandler.UpdateBook)
-	r.DELETE("/books/:id", bookHandler.DeleteBook)
+func SetupBooksRoutes(r *gin.Engine, db *gorm.DB, jwtKey string) {
+
+	bookRepo := repository.NewBookRepository(db)
+	bookService := service.NewBookService(bookRepo)
+	bookHandler := delivery.NewBookHandler(bookService)
+
+	r.GET("/api/v1/books", bookHandler.GetAllBooks)
+	r.GET("/api/v1/books/:id", bookHandler.GetBookByID)
+
+	pr := r.Group("/api/v1/books", middleware.AuthMiddleware(jwtKey))
+	{
+		pr.POST("/", bookHandler.CreateBook)
+		pr.PUT("/:id", bookHandler.UpdateBook)
+		pr.DELETE("/:id", bookHandler.DeleteBook)
+	}
 }

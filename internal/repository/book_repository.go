@@ -2,6 +2,7 @@ package repository
 
 import (
 	"BookStore/internal/models"
+
 	"gorm.io/gorm"
 )
 
@@ -29,7 +30,7 @@ func (r *bookRepository) FindAll() ([]models.Book, error) {
 
 func (r *bookRepository) FindByID(id uint) (*models.Book, error) {
 	var book models.Book
-	err := r.db.First(&book, id).Error
+	err := r.db.Preload("Publisher").First(&book, id).Error
 	return &book, err
 }
 

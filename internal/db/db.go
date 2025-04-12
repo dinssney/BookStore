@@ -26,6 +26,7 @@ func Init() {
 		log.Fatal("Failed to run migrations:", err)
 	}
 
+	// For rolling back
 	// if err := RunMigrationsDown(); err != nil {
 	// 	log.Fatal("Failed to run migrations:", err)
 	// }

@@ -9,9 +9,9 @@ import (
 	"gorm.io/gorm"
 )
 
-func SetupAuthRoutes(router *gin.Engine, db *gorm.DB) {
+func SetupAuthRoutes(router *gin.Engine, db *gorm.DB, jwtKey string) {
 	ur := repository.NewUserRepository(db)
-	as := service.NewAuthService(ur)
+	as := service.NewAuthService(ur, jwtKey)
 	ah := delivery.NewAuthHandler(as)
 
 	authRoutes := router.Group("/api/v1/auth")

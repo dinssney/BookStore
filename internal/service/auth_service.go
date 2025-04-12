@@ -15,8 +15,8 @@ type AuthService struct {
 	jwtKey []byte
 }
 
-func NewAuthService(repo repository.UserRepository) *AuthService {
-	return &AuthService{repo: repo}
+func NewAuthService(repo repository.UserRepository, jwtKey string) *AuthService {
+	return &AuthService{repo: repo, jwtKey: []byte(jwtKey)}
 }
 
 func (uc *AuthService) Register(username, email, password string) (string, error) {
