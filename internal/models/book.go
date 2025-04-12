@@ -2,6 +2,8 @@ package models
 
 import "gorm.io/gorm"
 
+// test
+
 type Book struct {
 	gorm.Model
 	Title       string `json:"title"`
