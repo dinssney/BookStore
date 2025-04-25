@@ -59,7 +59,7 @@ func AuthMiddleware(jwtKey string) gin.HandlerFunc {
 			}
 
 			// Set typed values in context
-			c.Set("user_id", int(userID))
+			c.Set("user_id", uint(userID))
 			c.Set("username", username)
 			c.Set("user_role", models.Role(userRole))
 

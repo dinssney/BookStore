@@ -9,6 +9,6 @@ type Book struct {
 	Title       string `json:"title"`
 	Author      string `json:"author"`
 	Description string `json:"description"`
-	Publisher   User   `json:"publisher"`
+	Publisher   User   `json:"publisher" gorm:"foreignKey:PublisherID"`
 	PublisherID uint   `json:"publisher_id"`
 }

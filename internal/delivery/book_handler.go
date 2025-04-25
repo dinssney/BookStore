@@ -42,7 +42,15 @@ func (h *BookHandler) CreateBook(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	h.service.CreateBook(&book)
+
+	userIDInterface, exists := c.Get("user_id")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "User ID not found"})
+		return
+	}
+	userID := userIDInterface.(uint)
+
+	h.service.CreateBook(&book, userID)
 	c.JSON(http.StatusCreated, book)
 }
 
@@ -53,8 +61,16 @@ func (h *BookHandler) UpdateBook(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
+	userIDInterface, exists := c.Get("user_id")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "User ID not found"})
+		return
+	}
+	userID := userIDInterface.(uint)
+
 	book.ID = uint(id)
-	h.service.UpdateBook(&book)
+	h.service.UpdateBook(&book, userID, uint(id))
 	c.JSON(http.StatusOK, book)
 }
 
