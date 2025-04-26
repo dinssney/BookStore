@@ -15,6 +15,7 @@ func main() {
 
 	routes.SetupAuthRoutes(r, db, jwtKey)
 	routes.SetupBooksRoutes(r, db, jwtKey)
+	routes.SetupUserBooksRoutes(r, db, jwtKey)
 
 	r.Run(":8080")
 }
