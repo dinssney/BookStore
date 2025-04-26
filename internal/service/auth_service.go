@@ -19,7 +19,7 @@ func NewAuthService(repo repository.UserRepository, jwtKey string) *AuthService 
 	return &AuthService{repo: repo, jwtKey: []byte(jwtKey)}
 }
 
-func (uc *AuthService) Register(username, email, password string) (string, error) {
+func (uc *AuthService) Register(username, email, password string, role models.Role) (string, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		return "", err
@@ -29,7 +29,7 @@ func (uc *AuthService) Register(username, email, password string) (string, error
 		Username: username,
 		Email:    email,
 		Password: string(hashedPassword),
-		Role:     models.RoleUser,
+		Role:     role,
 	}
 	err = uc.repo.Create(user)
 	if err != nil {

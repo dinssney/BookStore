@@ -3,6 +3,7 @@ package routes
 import (
 	"BookStore/internal/delivery"
 	"BookStore/internal/middleware"
+	"BookStore/internal/models"
 	"BookStore/internal/repository"
 	"BookStore/internal/service"
 
@@ -19,7 +20,7 @@ func SetupBooksRoutes(r *gin.Engine, db *gorm.DB, jwtKey string) {
 	r.GET("/api/v1/books", bookHandler.GetAllBooks)
 	r.GET("/api/v1/books/:id", bookHandler.GetBookByID)
 
-	pr := r.Group("/api/v1/books", middleware.AuthMiddleware(jwtKey))
+	pr := r.Group("/api/v1/books", middleware.AuthMiddleware(jwtKey), middleware.RequireRole(models.RolePublisher))
 	{
 		pr.POST("/", bookHandler.CreateBook)
 		pr.PUT("/:id", bookHandler.UpdateBook)

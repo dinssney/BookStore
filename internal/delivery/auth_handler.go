@@ -1,6 +1,7 @@
 package delivery
 
 import (
+	"BookStore/internal/models"
 	"BookStore/internal/service"
 
 	"github.com/gin-gonic/gin"
@@ -26,7 +27,7 @@ func (ah *AuthHandler) Register(c *gin.Context) {
 		return
 	}
 
-	token, err := ah.authService.Register(req.Username, req.Email, req.Password)
+	token, err := ah.authService.Register(req.Username, req.Email, req.Password, models.RoleUser)
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Registration failed"})
 		return
@@ -52,4 +53,25 @@ func (ah *AuthHandler) Login(c *gin.Context) {
 	}
 
 	c.JSON(200, gin.H{"token": token})
+}
+
+func (ah *AuthHandler) RegisterPublisher(c *gin.Context) {
+	var req struct {
+		Username string `json:"username" binding:"required"`
+		Email    string `json:"email" binding:"required,email"`
+		Password string `json:"password" binding:"required"`
+	}
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(400, gin.H{"error": "Invalid request"})
+		return
+	}
+
+	token, err := ah.authService.Register(req.Username, req.Email, req.Password, models.RolePublisher)
+	if err != nil {
+		c.JSON(500, gin.H{"error": "Registration failed"})
+		return
+	}
+
+	c.JSON(201, gin.H{"token": token})
 }

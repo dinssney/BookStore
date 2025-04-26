@@ -18,5 +18,6 @@ func SetupAuthRoutes(router *gin.Engine, db *gorm.DB, jwtKey string) {
 	{
 		authRoutes.POST("/register", ah.Register)
 		authRoutes.POST("/login", ah.Login)
+		authRoutes.POST("/pulisher/register", ah.RegisterPublisher)
 	}
 }
