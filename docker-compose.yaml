@@ -14,5 +14,23 @@ services:
     volumes:
       - pg_data:/var/lib/postgresql/data
 
+  bookstore:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bookstore_app
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: book_db
+      DB_USER: user
+      DB_PASSWORD: password
+      DB_NAME: bookdb
+      DB_PORT: 5432
+      DB_SSLMODE: disable
+    depends_on:
+      - postgres
+
 volumes:
   pg_data:
