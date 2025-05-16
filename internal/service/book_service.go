@@ -46,6 +46,7 @@ func (s *bookService) UpdateBook(req *models.Book, publisherID uint, id uint) er
 	book.Title = req.Title
 	book.Author = req.Author
 	book.Description = req.Description
+	book.CoverImageUrl = req.CoverImageUrl
 
 	return s.repo.Update(book)
 }
